@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delivery Route Mapping</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+        .info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+            font-size: 14px;
+        }
+        .marker-icon {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            border: 2px solid white;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            font-size: 16px;
+        }
+        .start-marker {
+            background-color: green; /* สีของจุดเริ่มต้น */
+        }
+        .waypoint-marker {
+            background-color: red; /* สีของจุดการจัดส่ง */
+        }
+        .leaflet-popup-content {
+            font-size: 12px;
+        }
+        .leaflet-popup-tip {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script>
+        const map = L.map('map').setView([13.741768969264234, 100.08435530435928], 18);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // กำหนดจุดเริ่มต้นและจุดสิ้นสุด
+        const startPoint = L.latLng(13.741768969264234, 100.08435530435928);
+        const endPoint = L.latLng(13.741768969264234, 100.08435530435928); // ใช้จุดเริ่มต้นเดียวกัน
+
+        fetch('/get_data/2024-08-02')  // เปลี่ยนวันที่ที่ต้องการ
+            .then(response => response.json())
+            .then(data => {
+                const waypoints = data.map((delivery, index) => {
+                    if (delivery.latitude && delivery.longitude) {
+                        return {
+                            latlng: L.latLng(delivery.latitude, delivery.longitude),
+                            popup: `Name: ${delivery.first_name} ${delivery.last_name}<br>Address: ${delivery.address}<br>Phone: ${delivery.phone}`,
+                            label: `Point ${index + 2}`  // ชื่อจุดอื่น ๆ เริ่มจากหมายเลข 2
+                        };
+                    }
+                }).filter(point => point !== undefined);
+
+                // สร้างเส้นทาง
+                L.Routing.control({
+                    waypoints: [startPoint, ...waypoints.map(p => p.latlng), endPoint],
+                    routeWhileDragging: true,
+                    geocoder: L.Control.Geocoder.nominatim(),
+                    createMarker: function() { return null; },  // ไม่แสดงมาร์คเกอร์พื้นฐาน
+                    routeLine: function(route) {
+                        return L.polyline(route.coordinates, {
+                            color: '#1a73e8',  // สีเส้นทาง
+                            weight: 5,
+                            opacity: 0.8,
+                            dashArray: '5, 10' // ทำให้เส้นทางมีลักษณะเป็นเส้นประ
+                        });
+                    }
+                }).addTo(map);
+
+                // เพิ่มมาร์คเกอร์และหมายเลขลำดับ
+                L.marker(startPoint, {
+                    icon: L.divIcon({
+                        className: 'marker-icon start-marker',
+                        html: `<div class="marker-icon start-marker">1</div>`
+                    })
+                }).addTo(map).bindPopup('Start Point');
+
+                waypoints.forEach((point, index) => {
+                    const pointNumber = index + 2;
+                    L.marker(point.latlng, {
+                        icon: L.divIcon({
+                            className: 'marker-icon waypoint-marker',
+                            html: `<div class="marker-icon waypoint-marker">${pointNumber}</div>`
+                        })
+                    }).addTo(map).bindPopup(`${point.label}<br>${point.popup}`);
+                });
+
+                // แสดงจำนวนจุด
+                const numberOfPoints = waypoints.length;
+                const info = `Total Points: ${numberOfPoints}`;
+                L.control({position: 'topright'}).onAdd = function() {
+                    const div = L.DomUtil.create('div', 'info');
+                    div.innerHTML = info;
+                    return div;
+                }.addTo(map);
+
+                // เพิ่มมาร์คเกอร์จุดสิ้นสุด
+                L.marker(endPoint, {
+                    icon: L.divIcon({
+                        className: 'marker-icon',
+                        html: `<div class="marker-icon" style="background-color: blue;">E</div>`
+                    })
+                }).addTo(map).bindPopup('End Point');
+            });
+    </script>
+</body>
+</html>

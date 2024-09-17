@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>J. Charoen Shrimp Feed</h1> <!-- หัวข้อชื่อแอป -->
+
+            <form action="{{ url_for('login') }}" method="post">
+                {{ form.hidden_tag() }}
+                <div class="input-box">
+                    <span class="icon"><i class='bx bx-envelope'></i></span>
+                    {{ form.email(class="form-input") }}
+                    <label for="{{ form.email.id }}">อีเมล <span class="hint">(Email)</span></label>
+                </div>
+                <div class="input-box">
+                    <span class="icon"><i class='bx bx-lock-alt'></i></span>
+                    {{ form.password(class="form-input") }}
+                    <label for="{{ form.password.id }}">รหัสผ่าน <span class="hint">(Password)</span></label>
+                </div>
+                {{ form.submit(class="btn", value="เข้าสู่ระบบ") }}
+                <div class="register-link">
+                    <p>ยังไม่มีบัญชี? <a href="{{ url_for('register') }}">สมัครสมาชิก</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        /* กำหนดรูปแบบของ <body> */
+        body {
+            display: flex; /* ใช้ Flexbox เพื่อจัดตำแหน่งเนื้อหา */
+            justify-content: center; /* จัดศูนย์แนวนอน */
+            align-items: center; /* จัดศูนย์แนวตั้ง */
+            min-height: 100vh; /* ความสูงขั้นต่ำของ <body> เท่ากับ 100% ของความสูงหน้าจอ */
+            background: #e3f2fd; /* กำหนดสีพื้นหลัง */
+            margin: 0; /* ลบระยะห่างของ <body> */
+            font-family: 'Arial', sans-serif; /* ใช้ฟอนต์ Arial */
+        }
+    
+        /* รูปแบบของ .login-container */
+        .login-container {
+            display: flex; /* ใช้ Flexbox เพื่อจัดตำแหน่งเนื้อหา */
+            justify-content: center; /* จัดศูนย์แนวนอน */
+            align-items: center; /* จัดศูนย์แนวตั้ง */
+            width: 100%; /* ความกว้างเต็มที่ */
+            height: 100%; /* ความสูงเต็มที่ */
+        }
+    
+        /* รูปแบบของ .login-box */
+        .login-box {
+            background: #fff; /* สีพื้นหลังของกล่อง */
+            padding: 40px; /* ช่องว่างภายใน 40px */
+            border-radius: 12px; /* มุมโค้งมน */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* เพิ่มเงาให้กล่อง */
+            text-align: center; /* จัดข้อความให้อยู่กลาง */
+            width: 500px; /* ความกว้างของกล่อง */
+        }
+    
+        /* รูปแบบของ <h1> ภายใน .login-box */
+        .login-box h1 {
+            margin-bottom: 20px; /* ระยะห่างด้านล่าง 20px */
+            font-size: 36px; /* ขนาดตัวอักษร */
+            color: #397d54; /* สีของตัวอักษร */
+        }
+    
+        /* รูปแบบของ .input-box */
+        .input-box {
+            position: relative; /* ตำแหน่งแบบ relative เพื่อให้ลูกสมบัติสามารถใช้ absolute */
+            margin-bottom: 25px; /* ระยะห่างด้านล่าง 25px */
+            align-items: center; /* จัดเนื้อหาให้อยู่กลาง (สำหรับ Flexbox) */
+            width: 90%; /* ความกว้าง 90% */
+        }
+    
+        /* รูปแบบของ <input> ภายใน .input-box */
+        .input-box input {
+            width: 100%; /* ความกว้างเต็มที่ */
+            padding: 12px; /* ช่องว่างภายใน 12px */
+            padding-left: 45px; /* ช่องว่างด้านซ้าย 45px */
+            background: #f7f9fc; /* สีพื้นหลังของ input */
+            border: 1px solid #ddd; /* เส้นขอบ 1px สีเทาอ่อน */
+            border-radius: 6px; /* มุมโค้งมน */
+            outline: none; /* ลบกรอบการเน้นเมื่อโฟกัส */
+            font-size: 16px; /* ขนาดตัวอักษร */
+            color: #333; /* สีของข้อความ */
+            transition: border 0.3s; /* การเปลี่ยนแปลงสีขอบแบบนุ่มนวล */
+        }
+    
+        /* รูปแบบของ <input> เมื่อได้รับการโฟกัส */
+        .input-box input:focus {
+            border-color: #007bff; /* เปลี่ยนสีขอบเป็นสีฟ้าเมื่อโฟกัส */
+        }
+    
+        /* รูปแบบของ <label> ภายใน .input-box */
+        .input-box label {
+            position: absolute; /* ตำแหน่งแบบ absolute */
+            left: 45px; /* ตำแหน่งด้านซ้าย 45px */
+            top: 50%; /* ตำแหน่งแนวตั้งกลาง */
+            transform: translateY(-50%); /* ปรับตำแหน่งแนวตั้งให้อยู่กลาง */
+            background: #fff; /* สีพื้นหลังของ label */
+            color: #777; /* สีของข้อความ */
+            padding: 0 5px; /* ช่องว่างภายในด้านซ้ายและขวา 5px */
+            font-size: 16px; /* ขนาดตัวอักษร */
+            pointer-events: none; /* ป้องกันการคลิกที่ label */
+            transition: 0.3s; /* การเปลี่ยนแปลงแบบนุ่มนวล */
+        }
+    
+        /* รูปแบบของ <label> เมื่อ <input> ได้รับการโฟกัสหรือเป็น valid */
+        .input-box input:focus~label,
+        .input-box input:valid~label {
+            top: -10px; /* เปลี่ยนตำแหน่งแนวตั้งของ label เมื่อโฟกัสหรือ valid */
+            left: 15px; /* เปลี่ยนตำแหน่งด้านซ้ายของ label */
+            color: #666666; /* เปลี่ยนสีข้อความ */
+            font-size: 14px; /* เปลี่ยนขนาดตัวอักษร */
+            font-weight: bold; /* ทำให้ตัวอักษรหนา */
+        }
+    
+        /* รูปแบบของ .icon ภายใน .input-box */
+        .input-box .icon {
+            position: absolute; /* ตำแหน่งแบบ absolute */
+            left: 15px; /* ตำแหน่งด้านซ้าย 15px */
+            top: 50%; /* ตำแหน่งแนวตั้งกลาง */
+            transform: translateY(-50%); /* ปรับตำแหน่งแนวตั้งให้อยู่กลาง */
+            color: #999; /* สีของไอคอน */
+            font-size: 20px; /* ขนาดตัวอักษรของไอคอน */
+        }
+    
+        /* รูปแบบของปุ่ม */
+        .btn {
+            width: 100%; /* ความกว้างเต็มที่ */
+            background: #bef8d2; /* สีพื้นหลังของปุ่ม */
+            color: #000; /* สีของข้อความในปุ่ม */
+            padding: 12px; /* ช่องว่างภายในปุ่ม */
+            border: none; /* ลบเส้นขอบ */
+            border-radius: 6px; /* มุมโค้งมน */
+            font-size: 18px; /* ขนาดตัวอักษร */
+            cursor: pointer; /* เปลี่ยนเคอร์เซอร์เป็น pointer เมื่อชี้ที่ปุ่ม */
+            transition: background 0.3s; /* การเปลี่ยนแปลงสีพื้นหลังแบบนุ่มนวล */
+        }
+    
+        /* รูปแบบของปุ่มเมื่อมีการวางเมาส์ */
+        .btn:hover {
+            background: #73c088; /* เปลี่ยนสีพื้นหลังเมื่อมีการวางเมาส์ */
+        }
+    
+        /* รูปแบบของลิงค์การสมัคร */
+        .register-link {
+            margin-top: 15px; /* ระยะห่างด้านบน 15px */
+            font-size: 14px; /* ขนาดตัวอักษร */
+        }
+    
+        /* รูปแบบของลิงค์ใน .register-link */
+        .register-link a {
+            color: #ff6868; /* สีของลิงค์ */
+            text-decoration: none; /* ลบขีดเส้นใต้ */
+        }
+    
+        /* รูปแบบของลิงค์ใน .register-link เมื่อมีการวางเมาส์ */
+        .register-link a:hover {
+            text-decoration: underline; /* ขีดเส้นใต้เมื่อมีการวางเมาส์ */
+        }
+    </style>
+</body>
+
+</html>

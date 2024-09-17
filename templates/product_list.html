@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8"> <!-- กำหนดการเข้ารหัสอักขระเป็น UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- กำหนดให้หน้าเว็บแสดงผลได้ดีในอุปกรณ์ที่มีขนาดหน้าจอแตกต่างกัน -->
+    <title>รายการผลิตภัณฑ์</title> <!-- ชื่อเรื่องของหน้าเว็บ -->
+
+    <!-- นำเข้า CSS ของ Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- สไตล์เพิ่มเติม -->
+    <style>
+        body {
+            margin: 0; /* กำหนดระยะขอบให้เป็น 0 เพื่อให้เนื้อหาครอบคลุมทั้งหน้าจอ */
+            font-family: Arial, sans-serif; /* กำหนดแบบอักษรของหน้าเว็บ */
+            background-color: #f8f9fa; /* กำหนดพื้นหลังของหน้าเว็บให้เป็นสีเทาอ่อน */
+        }
+
+        .navbar-custom {
+            background-color: #397d54; /* กำหนดสีพื้นหลังของ navbar เป็นสีเขียวเข้ม */
+        }
+
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link {
+            font-size: 1.25rem; /* ปรับขนาดตัวอักษรใน navbar */
+            color: #fff; /* กำหนดสีข้อความใน navbar เป็นสีขาว */
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: #e9ecef; /* เปลี่ยนสีข้อความเมื่อวางเมาส์เป็นสีเทาอ่อน */
+        }
+
+        h1 {
+            font-size: 2rem; /* กำหนดขนาดตัวอักษรของหัวข้อ */
+            color: #333; /* กำหนดสีของหัวข้อ */
+        }
+
+        .main-content {
+            margin-top: 80px; /* กำหนดระยะห่างด้านบนสำหรับเนื้อหา */
+        }
+
+        .flash-message {
+            padding: 15px; /* กำหนดระยะห่างภายในของข้อความ flash */
+            margin-bottom: 20px; /* กำหนดระยะห่างด้านล่างของข้อความ flash */
+            border-radius: 5px; /* กำหนดให้มุมของกล่องข้อความ flash โค้งมน */
+            font-size: 1rem; /* กำหนดขนาดตัวอักษรของข้อความ flash */
+        }
+
+        .flash-message.success {
+            background-color: #d4edda; /* กำหนดสีพื้นหลังของข้อความ flash สำเร็จ */
+            color: #155724; /* กำหนดสีข้อความของข้อความ flash สำเร็จ */
+        }
+
+        .flash-message.error {
+            background-color: #f8d7da; /* กำหนดสีพื้นหลังของข้อความ flash ข้อผิดพลาด */
+            color: #721c24; /* กำหนดสีข้อความของข้อความ flash ข้อผิดพลาด */
+        }
+
+        .search-bar {
+            margin-bottom: 20px; /* กำหนดระยะห่างด้านล่างของฟอร์มค้นหา */
+        }
+
+        .table th, .table td {
+            text-align: center; /* กำหนดให้ข้อความในตารางจัดกลาง */
+        }
+
+        .btn-custom {
+            margin-top: 20px; /* กำหนดระยะห่างด้านบนของปุ่ม */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <a class="navbar-brand" href="{{ url_for('home') }}">J.Charoen Shrimp Feed</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    {% if request.endpoint != 'login' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="container mt-5 pt-5 main-content">
+        <h1 class="mb-4">รายการผลิตภัณฑ์</h1>
+
+        <!-- แสดงข้อความ flash -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div id="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        <script>
+            // Hide flash messages after 5 seconds
+            setTimeout(function() {
+                document.getElementById('flash-messages').style.display = 'none';
+            }, 3000);
+        </script>
+        {% endif %}
+        {% endwith %}
+
+        <!-- ตารางแสดงข้อมูลผลิตภัณฑ์ -->
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ยี่ห้อ</th>
+                    <th>น้ำหนักต่อกระสอบ</th>
+                    <th>ราคา</th>
+                    {% if current_user.user_type == 'admin' %}
+                    <th>แก้ไข</th>
+                    <th>ลบ</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.brand }}</td>
+                    <td>{{ product.weight_per_bag }}</td>
+                    <td>{{ product.price }}</td>
+                    {% if current_user.user_type == 'admin' %}
+                    <td>
+                        <!-- ลิงก์สำหรับแก้ไขข้อมูลผลิตภัณฑ์ -->
+                        <a href="{{ url_for('edit_product', product_id=product.id) }}" class="btn btn-warning btn-sm">แก้ไข</a>
+                    </td>
+                    <td>
+                        <!-- ฟอร์มสำหรับลบข้อมูลผลิตภัณฑ์ -->
+                        <form action="{{ url_for('delete_product', product_id=product.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('คุณแน่ใจว่าต้องการลบผลิตภัณฑ์นี้?')">ลบ</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- ลิงก์กลับสู่หน้าเพิ่มผลิตภัณฑ์ และหน้าแรก -->
+        <a href="{{ url_for('add_product') }}" class="btn btn-secondary btn-custom">เพิ่มผลิตภัณฑ์ใหม่</a>
+        <a href="{{ url_for('home') }}" class="btn btn-secondary btn-custom">กลับสู่หน้าแรก</a>
+
+    </main>
+
+    <!-- นำเข้า JavaScript ของ Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

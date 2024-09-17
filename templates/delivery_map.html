@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แผนที่การจัดส่ง</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>แผนที่การจัดส่ง</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">หน้าแรก</a> |
+            <a href="{{ url_for('delivery_map') }}">แผนที่การจัดส่ง</a>
+        </nav>
+    </header>
+    <main>
+        <div id="map"></div>
+        <script>
+            function initMap() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: -34.397, lng: 150.644 },
+                    zoom: 8
+                });
+
+                // ตัวอย่างการเพิ่ม Marker
+                var marker = new google.maps.Marker({
+                    position: { lat: -34.397, lng: 150.644 },
+                    map: map,
+                    title: 'จุดจัดส่ง'
+                });
+            }
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+    </main>
+    <footer>
+        <p>&copy; 2024 บริษัทของเรา</p>
+    </footer>
+</body>
+</html>

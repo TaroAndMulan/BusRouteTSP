@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Map</title>
+    <style>
+        /* Custom styles for the map */
+        #map {
+            height: 100vh; /* Full viewport height */
+            width: 100%;   /* Full width */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Delivery Map</h1>
+    <!-- Integration with a mapping service to display a map -->
+    <div id="map"></div>
+    <script>
+        // Initialize and display the map
+        function initMap() {
+            // Example using Google Maps API
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: {lat: -34.397, lng: 150.644} // Set default center
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+</body>
+
+</html>
