@@ -2,25 +2,25 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FloatField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 
+
 provinces_of_thailand = [
-    "Bangkok", "Amnat Charoen", "Ang Thong", "Bueng Kan", "Buriram",
-    "Chachoengsao", "Chai Nat", "Chaiyaphum", "Chanthaburi", "Chiang Mai",
-    "Chiang Rai", "Chonburi", "Chumphon", "Kalasin", "Kamphaeng Phet",
-    "Kanchanaburi", "Khon Kaen", "Krabi", "Lampang", "Lamphun", "Loei",
-    "Lopburi", "Mae Hong Son", "Maha Sarakham", "Mukdahan", "Nakhon Nayok",
-    "Nakhon Pathom", "Nakhon Phanom", "Nakhon Ratchasima", "Nakhon Sawan",
-    "Nakhon Si Thammarat", "Nan", "Narathiwat", "Nong Bua Lamphu", "Nong Khai",
-    "Nonthaburi", "Pathum Thani", "Pattani", "Phang Nga", "Phatthalung",
-    "Phayao", "Phetchabun", "Phetchaburi", "Phichit", "Phitsanulok", "Phrae",
-    "Phuket", "Prachinburi", "Prachuap Khiri Khan", "Ranong", "Ratchaburi",
-    "Rayong", "Roi Et", "Sa Kaeo", "Sakon Nakhon", "Samut Prakan",
-    "Samut Sakhon", "Samut Songkhram", "Saraburi", "Satun", "Sing Buri",
-    "Sisaket", "Songkhla", "Sukhothai", "Suphan Buri", "Surat Thani", "Surin",
-    "Tak", "Trang", "Trat", "Ubon Ratchathani", "Udon Thani", "Uthai Thani",
-    "Uttaradit", "Yala", "Yasothon"
+    'กรุงเทพมหานคร', 'สมุทรปราการ', 'นนทบุรี', 'ปทุมธานี', 'พระนครศรีอยุธยา',
+    'อ่างทอง', 'ลพบุรี', 'สิงห์บุรี', 'ชัยนาท', 'สระบุรี', 'ชลบุรี', 'ระยอง',
+    'จันทบุรี', 'ตราด', 'ฉะเชิงเทรา', 'ปราจีนบุรี', 'นครนายก', 'สระแก้ว',
+    'นครราชสีมา', 'บุรีรัมย์', 'สุรินทร์', 'ศรีสะเกษ', 'อุบลราชธานี',
+    'ยโสธร', 'ชัยภูมิ', 'อำนาจเจริญ', 'หนองบัวลำภู', 'ขอนแก่น', 'อุดรธานี',
+    'เลย', 'หนองคาย', 'มหาสารคาม', 'ร้อยเอ็ด', 'กาฬสินธุ์', 'สกลนคร',
+    'นครพนม', 'มุกดาหาร', 'เชียงใหม่', 'ลำพูน', 'ลำปาง', 'อุตรดิตถ์',
+    'แพร่', 'น่าน', 'พะเยา', 'เชียงราย', 'แม่ฮ่องสอน', 'นครสวรรค์',
+    'อุทัยธานี', 'กำแพงเพชร', 'ตาก', 'สุโขทัย', 'พิษณุโลก', 'พิจิตร',
+    'เพชรบูรณ์', 'ราชบุรี', 'กาญจนบุรี', 'สุพรรณบุรี', 'นครปฐม', 'สมุทรสาคร',
+    'สมุทรสงคราม', 'เพชรบุรี', 'ประจวบคีรีขันธ์', 'นครศรีธรรมราช', 'กระบี่',
+    'พังงา', 'ภูเก็ต', 'สุราษฎร์ธานี', 'ระนอง', 'ชุมพร', 'สงขลา', 'สตูล',
+    'ตรัง', 'พัทลุง', 'ปัตตานี', 'ยะลา', 'นราธิวาส'
 ]
 
-
+def get_provinces():
+    return provinces_of_thailand
 # Forms
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -65,20 +65,3 @@ class ProductForm(FlaskForm):
     price = FloatField('Price')
     submit = SubmitField('Submit')
 
-
-class DeliveryForm(FlaskForm):
-    user_id = SelectField('รายชื่อลูกค้า',
-                          choices=[],
-                          validators=[DataRequired()])
-
-    submit = SubmitField('บันทึก')
-
-
-"""
-class DeliveryForm(FlaskForm):
-    first_name = StringField('ชื่อ', validators=[DataRequired()])
-    last_name = StringField('นามสกุล', validators=[DataRequired()])
-    address = TextAreaField('ที่อยู่', validators=[DataRequired()])
-    phone = StringField('โทรศัพท์', validators=[DataRequired()])
-    submit = SubmitField('บันทึก')
-"""

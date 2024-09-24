@@ -102,7 +102,7 @@
             {% endwith %}
             
             <!-- ฟอร์มสำหรับแก้ไขลูกค้า -->
-            <form action="{{ url_for('edit_customer', customer_id=customer.id) }}" method="POST">
+            <form action="{{ url_for('edit_customer',customer_id=customer_id) }}" method="POST">
                 {{ form.hidden_tag() }}
 
                 <div class="form-group">

@@ -131,14 +131,15 @@
 
         <div class="dashboard-section">
             <h2>
-                <a class="btn btn-primary" href="{{ url_for('today_deliveries') }}">การจัดส่งวันนี้</a>
+                <a class="btn btn-primary" href="{{ url_for('upload') }}">คำนวณเส้นทาง</a>
             </h2>
-            <p>จัดการการจัดส่งสำหรับวันนี้: ชื่อ, นามสกุล, ที่อยู่, จังหวัด, โทรศัพท์</p>
+            <p>อ่านข้อมูลลูกค้าจากไฟล์ excel คำนวณเส้นทางโดยใช้ tsp </p>
         </div>
-        
+
+
         <div class="dashboard-section">
             <h2>
-                <a class="btn btn-primary" href="{{ url_for('map') }}">แผนที่การจัดส่ง</a>
+                <a class="btn btn-primary" href="{{ url_for('map_driver') }}">แผนที่การจัดส่ง</a>
             </h2>
             <p>แสดงแผนที่สำหรับคนขับรถ</p>
         </div>

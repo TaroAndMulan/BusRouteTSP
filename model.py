@@ -41,29 +41,6 @@ class Customer:
     }
 
 #--------------------------------------------------------------
-# PROVINCE MODEL
-#--------------------------------------------------------------
-
-class Province:
-  def __init__(self,id,name):
-    self.id = id
-    self.name = name
-    
-#--------------------------------------------------------------
-# DELIVERY MODEL
-#--------------------------------------------------------------
-
-class Delivery:
-  def __init__(self, id, first_name, last_name, address, phone, date):
-    self.id = id
-    self.first_name = first_name
-    self.last_name = last_name
-    self.address = address
-    self.phone = phone
-    self.date = date
-
-
-#--------------------------------------------------------------
 # USER MODEL
 #--------------------------------------------------------------
 class User:
