@@ -6,7 +6,7 @@ from supabase import create_client, Client
 #--------------Connect_to_database---------------------------------------
 def connect_supabase():
     url = "https://cyfvhiygtkpljtmkvcbw.supabase.co"
-    key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5ZnZoaXlndGtwbGp0bWt2Y2J3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyNzAwMDUxMiwiZXhwIjoyMDQyNTc2NTEyfQ.osEXvZE-svG7LJVuCNPzl83IiH0Zseli2NZOF0W_gGY"
+    key = ""
     supabase: Client = create_client(url, key)
     return supabase
 
