@@ -14,7 +14,6 @@ Optimal Route Calculation: Solves the Traveling Salesman Problem (TSP) using MIP
 
 Map Visualization: Displays the optimal routes on an interactive map.
 
-![image](https://github.com/user-attachments/assets/d898b362-6942-4157-a687-c862e39dfb50)
 
 
 ## Technologies Used
